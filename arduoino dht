@@ -1,0 +1,38 @@
+#include "DHT.h"                  
+#define DHTPIN 4              
+#define DHTTYPE DHT11   
+ 
+DHT dht(DHTPIN, DHTTYPE);
+ 
+void setup() {
+  Serial.begin(9600); 
+  Serial.println("Tutorial Akses data kelembapan dan suhu udara"); 
+  dht.begin();         
+}
+ 
+void loop() {
+  
+  float kelembapan = dht.readHumidity();   
+  //Pembacaan dalam format celcius (c)
+  float suhu_c = dht.readTemperature();     
+  //pembacaan dalam format Fahrenheit
+  float suhu_f = dht.readTemperature(true); 
+ 
+  //instruksi untuk periksa kegagalan pembacaan nilai sensor
+  if (isnan(kelembapan) || isnan(suhu_c) || isnan(suhu_f)) {
+    Serial.println("Pembacaan data sensor gagal!");
+    return;
+  }
+  
+  Serial.print("Kelembapan: "); 
+  Serial.print(kelembapan);
+  Serial.print(" %\t");
+  Serial.print("Suhu : ");           
+  Serial.print(suhu_c);
+  Serial.print("°"); 
+  Serial.print("C / ");
+  Serial.print(suhu_f); 
+  Serial.print("°");
+  Serial.print("F\n");
+  delay(1000);
+}
